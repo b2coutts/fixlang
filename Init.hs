@@ -26,13 +26,13 @@ initTable = [
     ("-",       int2 (-)),
     ("*",       int2 (*)),
     ("/",       int2 quot),
-    ("%",       int2 mod),
+    ("mod",       int2 mod),
 
     ("if",      Func 3 myif),
     ("else",    Func 1 (\[x] -> x)),
-    ("gt",      Func 2 gt),
-    ("lt",      Func 2 lt),
-    ("eq",      Func 2 eq),
+    ("gt",      Func 2 $ boolToVal . gt),
+    ("lt",      Func 2 $ boolToVal . lt),
+    ("eq",      Func 2 $ boolToVal . eq),
 
     ("empty",   Empty),
     ("cons",    Func 2 (\[a,b] -> Cons a b)),
@@ -43,17 +43,32 @@ initTable = [
     ("strcat",  Func 2 mystrcat)
     ]
 
-gt [(Intval a), (Intval b)]  = boolToVal $ a > b
-gt [(Strval a), (Strval b)]  = boolToVal $ a > b
+gt :: [Value] -> Bool
+gt [Intval a, Intval b] = a > b
+gt [Strval a, Strval b] = a > b
+gt [Cons a b, Cons c d]
+    | gt [a, c]             = True
+    | lt [a, c]             = False
+    | otherwise             = gt [b, d]
+gt [Empty, _]               = False
+gt [_, Empty]               = False
 gt _                        = error "Usage: gt Int Int or gt String String"
 
-lt [(Intval a), (Intval b)]  = boolToVal $ a < b
-lt [(Strval a), (Strval b)]  = boolToVal $ a < b
+lt [Intval a, Intval b] = a < b
+lt [Strval a, Strval b] = a < b
+lt [Cons a b, Cons c d]
+    | lt [a, c]             = True
+    | gt [a, c]             = False
+    | otherwise             = lt [b, d]
 lt _                        = error "Usage: lt Int Int or lt String String"
 
-eq [(Intval a), (Intval b)]  = boolToVal $ a == b
-eq [(Strval a), (Strval b)]  = boolToVal $ a == b
-eq _                        = error "Usage: eq Int Int or eq String String"
+eq [Intval a, Intval b]     = a == b
+eq [Strval a, Strval b]     = a == b
+eq [Cons a b, Cons c d]     = eq [a,c] && eq [b,d]
+eq [Empty, Empty]           = True
+eq [_, Empty]               = False
+eq [Empty, _]               = False
+eq _                        = error "Usage: eq Val Val"
 
 mycar [Empty]               = error "car called on empty list"
 mycar [Strval ""]           = error "car called on empty string"

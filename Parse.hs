@@ -59,6 +59,7 @@ infer []                = (0, [])
 infer (Arg x:xs)        = let (a, b) = infer xs in (max a x, b)
 infer (Dotarg x:xs)     = let (a, b) = infer xs in (max a x, b)
 infer (Name x:xs)       = let (a, b) = infer xs in (a, x:b)
+infer (Dotname x:xs)    = let (a, b) = infer xs in (a, x:b)
 infer (Lmbtok _ x _:xs) = let (a, b) = infer xs in (a, x ++ b)
 infer (_:xs)            = infer xs
 

@@ -1,5 +1,5 @@
 # factorial
-let factorial (
+factorial: (
     if .1
         * .1  .0 - .1 1
     else
@@ -7,7 +7,7 @@ let factorial (
 )
 
 # equivalent definition
-let terse (if .1 * .1 .0 - .1 1 1)
+terse: (if .1 * .1 .0 - .1 1 1)
 
 
 , 5, factorial 5;

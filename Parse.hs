@@ -33,6 +33,7 @@ tkz (',':xs)            = Name "cons":tkz xs
 tkz ('<':xs)            = Name "car":tkz xs
 tkz ('>':xs)            = Name "cdr":tkz xs
 tkz (';':xs)            = Name "empty":tkz xs
+tkz (':':xs)            = Punc ':':tkz xs
 tkz ('?':xs)            = Name "if":tkz xs
 tkz ('#':xs)            = tkz $ tail $ dropWhile (/= '\n') xs
 tkz ('"':xs)            = parseStr xs
@@ -79,6 +80,8 @@ flipDot x           = x
 pproc                           :: [Token] -> ([Token], [Token])
 pproc []                        = ([], [])
 pproc (Punc ',':xs)             = pproc xs
+pproc (x:Punc ':':xs)           = pproc $ Name "let":x:xs
+pproc (Punc ':':xs)             = error "Invalid use of ':'"
 pproc (Punc '$':xs)             = appto [Apply] $ pproc xs
 pproc (Punc '{':Inttok i:xs)    = let (a, b)    = pproc xs
                                       (_, ns)   = infer a in

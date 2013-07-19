@@ -1,5 +1,5 @@
 # functional map
-let map (
+map: (
     if .2           , .1 car .2
                       .0 .1. cdr .2
     else            empty

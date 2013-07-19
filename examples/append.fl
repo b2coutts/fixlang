@@ -1,14 +1,14 @@
 # list append
 
 # add the given element to the end of a list
-let addToEnd (
+addToEnd: (
     if .1       , car .1
                      .0 cdr .1 .2
     else        , .2 empty
 )
 
 # append 2 lists
-let append (
+append: (
     if .2       .0 addToEnd .1  car .2
                    cdr .2
     else        .1

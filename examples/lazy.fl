@@ -1,0 +1,5 @@
+# simple program showing that FL is lazy
+# it may not be immediately obvious, but $[0] recurses infinitely
+let incomputable $[0]
+
+42

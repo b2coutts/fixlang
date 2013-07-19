@@ -32,7 +32,6 @@ parseInt xs             = let (a, b) = span (`elem` ['0'..'9']) xs in
     (foldr (\x y -> (fromEnum x - 48) + 10*y) 0 $ reverse a, b)
 
 -- convert a string into a list of tokens
--- TODO: could merge (name, rname) = into the earlier case line
 tkz                     :: String -> [Token]
 tkz []                  = []
 tkz (';':xs)            = tkz $ tail $ takeWhile (/= '\n') xs

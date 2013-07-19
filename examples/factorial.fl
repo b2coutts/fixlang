@@ -1,0 +1,16 @@
+; factorial
+let factorial {1,
+    if .1
+        * .1  .0 - .1 1
+    else
+        1
+}
+
+; equivalent definition
+let terse {1, if .1 * .1 .0 - .1 1 1}
+
+
+let a 1
+let b 2
+
+[ a , terse 4 ]

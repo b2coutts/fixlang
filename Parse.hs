@@ -34,7 +34,7 @@ parseInt xs             = let (a, b) = span (`elem` ['0'..'9']) xs in
 -- convert a string into a list of tokens
 tkz                     :: String -> [Token]
 tkz []                  = []
-tkz (';':xs)            = tkz $ tail $ takeWhile (/= '\n') xs
+tkz (';':xs)            = tkz $ tail $ dropWhile (/= '\n') xs
 tkz ('"':xs)            = parseStr xs
 tkz ('.':x:xs)
     | elem x ['0'..'9'] = case b of

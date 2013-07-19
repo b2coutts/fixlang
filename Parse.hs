@@ -29,6 +29,7 @@ parseInt xs             = let (a, b) = span (`elem` ['0'..'9']) xs in
 -- convert a string into a list of tokens
 tkz                     :: String -> [Token]
 tkz []                  = []
+tkz (',':xs)            = Name "cons":tkz xs
 tkz (';':xs)            = tkz $ tail $ dropWhile (/= '\n') xs
 tkz ('"':xs)            = parseStr xs
 tkz ('.':x:xs)
@@ -39,7 +40,7 @@ tkz ('.':x:xs)
     where (a, b)        = parseInt (x:xs)
 tkz (x:xs)
     | elem x " \t\n"    = tkz xs
-    | elem x "(){},$" = Punc x:tkz xs
+    | elem x "(){}$" = Punc x:tkz xs
     | elem x ['0'..'9'] = let (a, b) = parseInt (x:xs) in Inttok a:tkz b
     | elem x beginList  = let (n,r) = span (`elem` bodyList) xs in case r of
         ('.':bs)        -> Dotname (x:n):tkz bs

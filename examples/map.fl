@@ -1,8 +1,8 @@
 ; functional map
-let map {2,
-    if .2           cons .1 car .2
-                         .0 .1. cdr .2
-    else            []
-}
+let map (
+    if .2           , .1 car .2
+                      .0 .1. cdr .2
+    else            empty
+)
 
-map {1, + 1 .1} [1,2,3,4]
+map (* 2 .1) ,1,2,3,4 empty

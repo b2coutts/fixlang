@@ -1,4 +1,4 @@
-; factorial
+# factorial
 let factorial (
     if .1
         * .1  .0 - .1 1
@@ -6,8 +6,8 @@ let factorial (
         1
 )
 
-; equivalent definition
+# equivalent definition
 let terse (if .1 * .1 .0 - .1 1 1)
 
 
-, 5, terse 5 empty
+, 5, factorial 5;

@@ -10,8 +10,9 @@ import Data.Map as Map
 
 
 -- datatype for parsed tokens from an FL program
-data Token = Strtok String | Inttok Int | Arg Int | Dotarg Int | Name String |
-             Dotname String | Lmbtok Int [String] [Token] | Apply | Punc Char
+data Token = Strtok String | Inttok Int | Dotint Int | Arg Int | Dotarg Int |
+             Name String | Dotname String | Lmbtok Int [String] [Token] | Apply
+             | Punc Char
                 deriving (Show, Eq)
 
 

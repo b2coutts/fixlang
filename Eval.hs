@@ -24,6 +24,7 @@ eval s@(Scope a b) (Name "let":Name n:xs)  = let (v, t) = eval s xs in
     eval (Scope (Map.insert n v a) b) t
 eval s (Strtok x:xs)                = (Strval x, xs)
 eval s (Inttok x:xs)                = (Intval x, xs)
+eval s (Dotint x:xs)                = (Intval x, xs)
 eval s (Arg x:xs)                   = apply (getval s $ Right x) s xs
 eval s (Dotarg x:xs)                = (getval s $ Right x, xs)
 eval s (Name x:xs)                  = apply (getval s $ Left x) s xs

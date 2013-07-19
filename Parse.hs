@@ -30,7 +30,11 @@ parseInt xs             = let (a, b) = span (`elem` ['0'..'9']) xs in
 tkz                     :: String -> [Token]
 tkz []                  = []
 tkz (',':xs)            = Name "cons":tkz xs
-tkz (';':xs)            = tkz $ tail $ dropWhile (/= '\n') xs
+tkz ('<':xs)            = Name "car":tkz xs
+tkz ('>':xs)            = Name "cdr":tkz xs
+tkz (';':xs)            = Name "empty":tkz xs
+tkz ('?':xs)            = Name "if":tkz xs
+tkz ('#':xs)            = tkz $ tail $ dropWhile (/= '\n') xs
 tkz ('"':xs)            = parseStr xs
 tkz ('.':x:xs)
     | elem x ['0'..'9'] = case b of
@@ -40,8 +44,10 @@ tkz ('.':x:xs)
     where (a, b)        = parseInt (x:xs)
 tkz (x:xs)
     | elem x " \t\n"    = tkz xs
-    | elem x "(){}$" = Punc x:tkz xs
-    | elem x ['0'..'9'] = let (a, b) = parseInt (x:xs) in Inttok a:tkz b
+    | elem x "()[]{}$"  = Punc x:tkz xs
+    | elem x ['0'..'9'] = let (a, b) = parseInt (x:xs) in
+        if null b || head b /= '.'  then Inttok a:tkz b
+                                    else Dotint a:tkz (tail b)
     | elem x beginList  = let (n,r) = span (`elem` bodyList) xs in case r of
         ('.':bs)        -> Dotname (x:n):tkz bs
         bs              -> Name (x:n):tkz bs
@@ -51,6 +57,7 @@ tkz (x:xs)
 infer                   :: [Token] -> (Int, [String])
 infer []                = (0, [])
 infer (Arg x:xs)        = let (a, b) = infer xs in (max a x, b)
+infer (Dotarg x:xs)     = let (a, b) = infer xs in (max a x, b)
 infer (Name x:xs)       = let (a, b) = infer xs in (a, x:b)
 infer (Lmbtok _ x _:xs) = let (a, b) = infer xs in (a, x ++ b)
 infer (_:xs)            = infer xs
@@ -58,6 +65,14 @@ infer (_:xs)            = infer xs
 -- helper function to make recursion in pproc easier
 appto           :: [Token] -> ([Token], [Token]) -> ([Token], [Token])
 appto t (a, b)  = (t ++ a, b)
+
+-- swap Ints with Args
+flipDot             :: Token -> Token
+flipDot (Arg x)     = Inttok x
+flipDot (Inttok x)  = Arg x
+flipDot (Dotarg x)  = Dotint x
+flipDot (Dotint x)  = Dotarg x
+flipDot x           = x
 
 -- post-process a token list
 pproc                           :: [Token] -> ([Token], [Token])
@@ -73,6 +88,11 @@ pproc (Punc '(':xs)             = let (a, b)    = pproc xs
                                       (i, ns)   = infer a in
     appto [(Lmbtok i ns a)] (pproc b)
 pproc (Punc ')':xs)             = ([], xs)
+pproc (Punc '[':xs)             = let (a, b)    = pproc xs
+                                      c         = map flipDot a
+                                      (i, ns)   = infer c in
+    appto [(Lmbtok i ns c)] (pproc b)
+pproc (Punc ']':xs)             = ([], xs)
 pproc (x:xs)                    = let (a, b) = pproc xs in (x:a, b)
 
 parse :: String -> [Token]

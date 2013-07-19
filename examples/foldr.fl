@@ -1,4 +1,4 @@
-; foldr
+# foldr
 let foldr ( 
     if .3
         .1  car .3
@@ -7,13 +7,10 @@ let foldr (
         .2
 )
 
-; really fucking terse
-let terse (if .3 .1 car .3 .0 .1. .2 cdr .3 .2)
-
-; create a list from .1 to .2; assumes .2>.1
+# create a list from .1 to .2; assumes .2>.1
 let range (
     if - .1 .2          cons .1  .0 + .1 1 .2
     else                cons .1 empty
 )
 
-terse +. 0 ,6,2,3,4 empty
+foldr +. 0 ,6,2,3,4; # 15

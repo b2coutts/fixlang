@@ -3,6 +3,7 @@ import Data.Map as Map
 import Data.Maybe
 import Parse
 import Init
+import Dtypes
 
 -- helper function; evaluate n values from a list of tokens
 neval       :: Int -> Scope -> [Token] -> ([Value], [Token])

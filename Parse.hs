@@ -1,12 +1,7 @@
 -- module to parse NL code
-module Parse
-( Token(..)
-, parse
-) where
+module Parse ( parse ) where
 
-data Token = Strtok String | Inttok Int | Arg Int | Dotarg Int | Name String |
-             Dotname String | Lmbtok Int [String] [Token] | Apply | Punc Char
-                deriving (Show, Eq)
+import Dtypes
 
 -- list of characters that can begin a variable name
 beginList = ['a'..'z'] ++ ['A'..'Z'] ++ "_+*/-=><"
@@ -51,19 +46,17 @@ tkz (x:xs)
         bs              -> Name (x:n):tkz bs
     | otherwise         = error $ "Invalid character '" ++ [x] ++ "' parsed"
 
--- helper function to make recursion in pproc easier
-appto           :: [Token] -> ([Token], [Token]) -> ([Token], [Token])
-appto t (a, b)  = (t ++ a, b)
-
--- given a token list, post-processed by pproc, return its largest non-nested
--- arg, and a list containing all names referenced by it
--- Note: this may return some names that needn't be in the lambda's scope
+-- find the largest arg of a token list, and a list of all names referenced
 infer                   :: [Token] -> (Int, [String])
 infer []                = (0, [])
 infer (Arg x:xs)        = let (a, b) = infer xs in (max a x, b)
 infer (Name x:xs)       = let (a, b) = infer xs in (a, x:b)
 infer (Lmbtok _ x _:xs) = let (a, b) = infer xs in (a, x ++ b)
 infer (_:xs)            = infer xs
+
+-- helper function to make recursion in pproc easier
+appto           :: [Token] -> ([Token], [Token]) -> ([Token], [Token])
+appto t (a, b)  = (t ++ a, b)
 
 -- post-process a token list
 pproc                           :: [Token] -> ([Token], [Token])
@@ -83,9 +76,3 @@ pproc (x:xs)                    = let (a, b) = pproc xs in (x:a, b)
 
 parse :: String -> [Token]
 parse = fst . pproc . tkz
-
--- tests
-test1 = parse "+ 1 ${2, * .1 .2} 5 4"
-test2 = parse "{2, + ${1, .1} .2 5}"
-test3 = parse "(+ .1 .2)"
-test4 = parse "let foldr (if .3 .1  car .3 .0 .1. .2 cdr .3 else .2 ) let terse (if .3 .1 car .3 .0 .1. .2 cdr .3 .2) terse +. 0 cons 1 cons 2 cons 3 empty"

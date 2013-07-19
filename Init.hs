@@ -8,34 +8,8 @@ module Init
 ) where
 
 import Parse
+import Dtypes
 import Data.Map as Map
-
-data Value = Strval String | Intval Int | Lmbval Int Scope [Token] |
-             Empty | Cons Value Value | Func Int ([Value] -> Value)
-
-instance Show Value where
-    show (Strval x)         = show x
-    show (Intval x)         = show x
-    show (Lmbval i s t)     = "Lmb" ++ show i ++ show t
-    show Empty              = "[]"
-    show (Cons a b)         = show a ++ ":" ++ show b
-    show (Func i _)         = "Func" ++ show i
-
-
-data Scope = Scope (Map String Value) [Value]
-                deriving Show
-
-getval                          :: Scope -> Either String Int -> Value
-getval (Scope s _) (Left x)     = case Map.lookup x s of
-    Nothing         -> error $ "Variable '" ++ x ++ "' is not in scope!"
-    Just v          -> v
-getval (Scope _ s) (Right x)
-    | length s > x  = s !! x
-    | otherwise     = error $ "Argument '" ++ show x ++ "' is not in scope!"
-
-setval                          :: String -> Value -> Scope -> Scope
-setval s v (Scope m l)          = Scope (Map.insert s v m) l
-
 
 -- helper function for composing Funcs
 int2     :: (Int -> Int -> Int) -> Value

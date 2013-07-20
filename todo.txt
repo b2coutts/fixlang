@@ -1,0 +1,24 @@
+Fix laziness issue
+    - Errors partially fixed it, but the following code infinitely loops:
+        - + if 1 0 let a $[0] a 45
+    - For some reason, without the + it's fine. There's some issue causing the
+      let to evaluate its expression, even though the value of a is never
+      actually referenced
+
+import libraries directly from the .fl file, rather than in command-line args
+    - will probably want to put something in Parse.hs for this; change parse so
+      it looks for import statements at the beginning, and throw an error if
+      there are any import statements in the body
+
+Extend libraries
+    - Implement string handling functions
+
+update documentation to reflect !, import, and Error.
+
+May want to rewrite the entire thing
+    - make strings fundamentally be lists
+        - car and cdr work on them anyway so they are essentially lists, and the
+          current idea of them sort of behaving like lists but not really is
+          stupid
+    - should solve some existing problems before rewriting the entire codebase
+      again

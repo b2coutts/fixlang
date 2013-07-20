@@ -31,8 +31,8 @@ OKAY BUT HOW DO I DO STUFF IN FIXLANG
 
 To begin, we'll ignore the last step of the fixlang recipe, and pretend fixlang
 doesn't have a bunch of ugly hacks in it. Instead, fixlang is a beautiful
-language, whose only punctuation is '.', '{', '}', and '$'. To begin, we'll examine a
-fundamental part of most languages: variable assignment.
+language, whose only punctuation is `.`, `{`, `}`, and `$`. To begin, we'll
+examine a fundamental part of most languages: variable assignment.
 
     let myvar "Hello World!" myvar          -> "Hello World!"
 
@@ -53,11 +53,11 @@ something like this:
 
 Go ahead and put this through the interpreter, and it will spit out 7. This
 also introduces our first function: `+`. `+` takes two arguments, adds them
-together, and returns the result. To apply any function in FL, we check how many
-arguments the function needs, evaluate that many arguments right of the
+together, and returns the result. To apply any function in FL, we check how
+many arguments the function needs, evaluate that many arguments right of the
 function, and evaluate the function with the values we obtained. In this
-example, the interpreter saw that `+` needs 2 arguments, so it read 2 more values
-from STDIN (apples and oranges). It then added the two values together,
+example, the interpreter saw that `+` needs 2 arguments, so it read 2 more
+values from STDIN (apples and oranges). It then added the two values together,
 obtaining 7, and bound 7 to fruits.
 
 When we "evaluate" a value, we first check if it's a function. If it isn't a
@@ -71,16 +71,16 @@ Thus, this expression adds `* 2 3` and `/ 8 - 3 1`. `* 2 3` evaluates to 6, and
 `/ 8 - 3 1` evaluates to 4; the entire expression evaluates to 10.
 
 
-There are four types of values in FL: `Ints`, `Strings`, `Empty`, and `Pairs`. We've
-already seen and worked with `Ints`, and we saw a `String` briefly in our hello
-world example. `Empty` seems like a weird datatype, but we use it for lists, as
-we'll see shortly.
+There are four types of values in FL: `Ints`, `Strings`, `Empty`, and `Pairs`.
+We've already seen and worked with `Ints`, and we saw a `String` briefly in our
+hello world example. `Empty` seems like a weird datatype, but we use it for
+lists, as we'll see shortly.
 
-`Pairs` are a unique data type, and simply represent two FL values. You can have a
-`Pair` of `Ints`, a `Pair` of `String`, a `Pair` of an `Int` and a `String`, a `Pair` of two
-`Emptys`, even `Pairs` of `Pairs`. To construct a `Pair`, we use `cons`, a function that
-takes two arguments, and returns a `Pair` of those arguments. All of the following
-are valid `Pairs`:
+`Pairs` are a unique data type, and simply represent two FL values. You can
+have a `Pair` of `Ints`, a `Pair` of `String`s, a `Pair` of an `Int` and a
+`String`, a `Pair` of two `Empty`s, even `Pair`s of `Pair`s. To construct a
+`Pair`, we use `cons`, a function that takes two arguments, and returns a
+`Pair` of those arguments. All of the following are valid `Pair`s:
 
     cons 1 4
     cons "Hello" "world!"
@@ -89,7 +89,7 @@ are valid `Pairs`:
 The last expression is a special kind of `Pair`; it is a list. Formally, we say
 a list is either empty, or `cons val lst`, where `val` is any FL value, and
 `lst` is any list. So, `empty` is a list, therefore `cons 3 empty` is a list,
-therefore cons `5 cons 3 empty` is a list. `cons empty empty`, and `cons cons 2
+therefore `cons 5 cons 3 empty` is a list. `cons empty empty`, and `cons cons 2
 empty 3 empty`, are also examples of lists.
 
 I sort of lied when I said that there are only four types of values in FL;
@@ -99,19 +99,19 @@ functions.  Any given `Lambda` takes some fixed number of arguments, and
 produces a result.  Here, we create a simple function that adds 1 to its
 argument:
 
-    let myFirst`Lambda` {1 + .1 1}
-    myFirst`Lambda` 41                    -> 42
+    let myFirstLambda {1 + .1 1}
+    myFirstLambda 41                        -> 42
 
 This introduces a number of new concepts, so let's break it into parts. First,
 we're being introduced to curly braces ({}). Curly braces are used to denote
 `Lambda`s; { starts a `Lambda`, and } closes a `Lambda`. When you have a { to
-define a `Lambda`, it must be immediately followed with a non-negative integer.
+define a `Lambda`, it must be immediately followed by a non-negative integer.
 This number specifies the number of arguments the `Lambda` takes.
 
 In this case, the `Lambda` takes one argument. Then, we have what almost seems
 like a regular addition expression, except for that weird . in front of the
-first argument. When you have a . preceding an integer, it means that in fact
-is not an integer, but an argument. .1 represent the first argument to the
+first argument. When you have a . preceding an integer, it means that is in
+fact not an integer, but an argument. .1 represents the first argument to the
 `Lambda`.  So, when the `Lambda` is later evaluated, .1 is replaced with 41,
 and then the expression + 41 1 evaluates to 42.
 
@@ -135,8 +135,8 @@ newlines as you want, means you have a lot of freedom in formatting your code.
 You should exercise this freedom often, as the lack of inherit structure in
 written FL code makes it very difficult to read without good formatting.
 
-Another function is the if function. if takes 3 arguments. If its first
-argument is 0, "" (the empty string), or empty, then it returns its 3rd
+Another function is the `if` function. if takes 3 arguments. If its first
+argument is `0`, `""` (the empty string), or `empty`, then it returns its 3rd
 argument. If its first argument is any other value, it returns its 2nd
 argument.
 
@@ -157,29 +157,29 @@ argument.
 
 The last example looks different, but we've simply formatted it differently,
 and used a new function, `else`. `else` is a trivial function, which takes one
-argument and returns it. We could just have easily have ommitted it and our
-code would have the same effect, but this helps to make our code more readable.
+argument and returns it. We could just as easily have ommitted it and our code
+would have the same effect, but it helps to make our code more readable.
 
 We refer to 0, "", and empty as "false" values, and all other values as "true"
-values. There are 3 function for producing true or false values: `eq` (equal), `gt`
-(greater than), and `lt` (less than). These functions produce boolean values,
-suitable for input to `if`; specifically, they return 1 or 0. `Int`s are
-compared numerically, `String`s are compared alphabetically, and `Pairs` are
-compared lexicographically; the left values are compared, and if they're equal,
-the right values are used. `Lambda`s cannot be used with these functions. Note
-that the two things you're comparing must be of the same type; you cannot
-compare a `String` to an `Int`, for instance.
+values. There are 3 functions for producing true or false values: `eq` (equal),
+`gt` (greater than), and `lt` (less than). These functions produce boolean
+values, suitable for input to `if`; specifically, they return 1 or 0. `Int`s
+are compared numerically, `String`s are compared alphabetically, and `Pair`s
+are compared lexicographically; the left values are compared, and if they're
+equal, the right values are used. `Lambda`s cannot be passed to these
+functions. Note that the two things you're comparing must be of the same type;
+you cannot compare a `String` to an `Int`, for instance.
 
     gt 34 2                                 -> 1
     eq 34 "34"                              -> 0
-    gt cons 1 cons 999 empty
+    lt cons 1 cons 999 empty
        cons 2 empty                         -> 1
 
-Now that we know if, we can make use of another property of `Lambda`s. In
+Now that we know `if`, we can make use of another property of `Lambda`s. In
 addition to all the arguments passed directly, every `Lambda` also has a zeroth
-argument, denoted `.0` (without quotes). This argument represents the `Lambda`
-itself. This means the `Lambda` can call itself within itself. If this seems
-confusing, consider this example:
+argument, denoted `.0`. This argument represents the `Lambda` itself. This
+means the `Lambda` can call itself within itself. If this seems confusing,
+consider this example:
 
     # this is a comment describing the function- it's the factorial function
     let factorial {1,
@@ -196,22 +196,22 @@ As a quick note, this introduces the comment; if you have the `#` character
 anywhere outside of a string, then the rest of that line will be ignored.
 
 Here, we have recursively defined the factorial function. If you step through
-the code, you will find that the logic is "if n > 0, then factorial(n) =
-n * factorial(n-1); otherwise, factorial(n) is 1". Recursion makes `Lambda`s in FL
+the code, you will find that the logic is "if n > 0, then factorial(n) = n *
+factorial(n-1); otherwise, factorial(n) is 1". Recursion makes `Lambda`s in FL
 very powerful.
 
-There is one more thing to be learned in FL; explicit function application. When
-you write a `Lambda`, it's evaluated as an expression, not directly as a function.
-That's why, if you have `let f {1, + .1 1} 4', the program will return 4,
-instead of passing 4 as an argument to the `Lambda` and binding the result to f.
-However, sometimes you may want to apply your lambdas. You use the function
-application operator, `$`, for this:
+There is one more thing to be learned in FL; explicit function application.
+When you write a `Lambda`, it's evaluated as an expression, not directly as a
+function.  That's why, if you have `let f {1, + .1 1} 4`, the program will
+return 4, instead of passing 4 as an argument to the `Lambda` and binding the
+result to `f`.  However, sometimes you may want to apply your lambdas. You use
+the function application operator, `$`, for this:
 
     $ {2, + .1 .2} 3 4                      -> 7
 
 We also have an opposite to this function. Sometimes, you may want to pass a
 function as an argument to another function, without evaluating it immediately.
-In this case, you append a . to the function's name:
+In this case, you append a `.` to the function's name:
 
     # function takes a function and an argument, and applies the function to the
     # argument twice
@@ -219,41 +219,42 @@ In this case, you append a . to the function's name:
     let add1    {1, + .1 1}
     double add1. 4                          -> 6
 
-Because we have a . after `add1`, `add1` doesn't try to take 4 as its own argument;
-instead, it is passed as an argument to double, which then applies it twice to
-4, yielding 6.
+Because we have a `.` after `add1`, `add1` doesn't try to take 4 as its own
+argument; instead, it is passed as an argument to double, which then applies it
+twice to 4, yielding 6.
 
 
 UGLY STUFF
 
-You now have all the tools needed to write FL code. The rest of this README will
-cover additional language features that serve to make code more concise.
+You now have all the tools needed to write FL code. The rest of this README
+will cover additional language features that serve to make code more concise.
 
 
 PAIRS/LISTS
 
 We have various symbols for dealing with pairs and lists. `,` is an alias for
-`cons`, `<` for `car`, `>` for `cdr`, and `;` for `empty`. Thus, `,1,2,3,4;` is a list of the
-numbers from 1 to 4. `<1,2,3,4;` is 1, and `>1,2,3,4;` is `2,3,4;`. This allows for a
-much more concise definition of lists and pairs.
+`cons`, `<` for `car`, `>` for `cdr`, and `;` for `empty`. Thus, `,1,2,3,4;` is
+a list of the numbers from 1 to 4. `<1,2,3,4;` is 1, and `>1,2,3,4;` is
+`2,3,4;`. This allows for a much more concise definition of lists and pairs.
 
 
 LAMBDAS
 
-Instead of using {}s to define `Lambda`s, you can also use (). The difference is
-that you don't need to tell () how many arguments you need; it will infer it by
-finding the "highest" argument referenced in it, and call that the number of
-arguments it needs. Thus, `{2, + .1 .2}` and `(+ .1 .2)` are equivalent expressions.
-This is convenient, though it is slightly weaker; it is impossible to define the
-`Lambda` `{2, .1}` with (), because () would create a `Lambda` of only one argument.
-For brevity and readability, () should be used instead of {} wherever possible.
+Instead of using {}s to define `Lambda`s, you can also use (). The difference
+is that you don't need to tell () how many arguments you need; it will infer it
+by finding the "highest" argument referenced in it, and call that the number of
+arguments it needs. Thus, `{2, + .1 .2}` and `(+ .1 .2)` are equivalent
+expressions.  This is convenient, though it is slightly weaker; it is
+impossible to define the `Lambda` `{2, .1}` with (), because () would create a
+`Lambda` of only one argument.  For brevity and readability, () should be used
+instead of {} wherever possible.
 
 You can also use []s to define `Lambda`s. []s are like [], except the way you
-refer to arguments and Ints gets reversed. That is, .3 now refers to the number
-3, and 3 now refers to the third argument. This can be very convenient when
-defining a function that makes heavy use of its arguments, and not-so-heavy use
-of numbers. As an example, here is the definition of a classic higher-order
-function:
+refer to arguments and `Int`s gets reversed. That is, `.3` now refers to the
+number 3, and `3` now refers to the third argument. This can be very convenient
+when defining a function that makes heavy use of its arguments, and
+not-so-heavy use of numbers. As an example, here is the definition of a classic
+higher-order function:
 
     # right fold on list
     let foldr [
@@ -264,11 +265,11 @@ function:
 
     foldr +. 0 ,1,2,3,4;                    -> 10
 
-Similarly, `?` is an alias for `if`; you can say `?1 2 3`, instead of `if 1 2 3`. With
-all of these tricks, you can define foldr in 18 characters!
+Similarly, `?` is an alias for `if`; you can say `?1 2 3`, instead of `if 1 2
+3`. With all of these tricks, you can define foldr in 18 characters!
 
     # 18-character foldr
     [?3 1<3 0 1.2>3 2]
 
-This should simultaneously show how powerful FL can be, and also how
-horrifyingly ugly it can be.
+This should simultaneously show how powerful FL can be, and how horrifyingly
+ugly it can be.

@@ -37,11 +37,11 @@ data Scope = Scope (Map String Value) [Value]
 
 getval                          :: Scope -> Either String Int -> Value
 getval (Scope s _) (Left x)     = case Map.lookup x s of
-    Nothing         -> error $ "Variable '" ++ x ++ "' is not in scope!"
+    Nothing         -> Error $ "Variable '" ++ x ++ "' is not in scope!"
     Just v          -> v
 getval (Scope _ s) (Right x)
     | length s > x  = s !! x
-    | otherwise     = error $ "Argument '" ++ show x ++ "' is not in scope!"
+    | otherwise     = Error $ "Argument '" ++ show x ++ "' is not in scope!"
 
 setval                          :: String -> Value -> Scope -> Scope
 setval s v (Scope m l)          = Scope (Map.insert s v m) l

@@ -19,7 +19,7 @@ apply v _ xs                        = (v, xs)
 
 -- main evaluation function; evaluates a list of tokens
 eval                                :: Scope -> [Token] -> (Value, [Token])
-eval _ []                           = error "Unexpected EOF"
+eval _ []                           = (Error "Unexpected EOF", [])
 eval s@(Scope a b) (Name "let":Name n:xs)  = let (v, t) = eval s xs in
     eval (Scope (Map.insert n v a) b) t
 eval s (Strtok x:xs)                = (Strval x, xs)

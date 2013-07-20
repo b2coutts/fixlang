@@ -266,10 +266,16 @@ higher-order function:
     foldr +. 0 ,1,2,3,4;                    -> 10
 
 Similarly, `?` is an alias for `if`; you can say `?1 2 3`, instead of `if 1 2
-3`. With all of these tricks, you can define foldr in 18 characters!
+3`. With all of these tricks (and some questionable formatting), you can define
+foldr in 18 characters!
 
     # 18-character foldr
     [?3 1<3 0 1.2>3 2]
+
+Indeed, by using shorthands, and removing spaces everywhere possible, you can
+write terrible valid code like this:
+
+    $[?2,1<2 0 1.>2;]($[?3 1<3 0 1.2>3 2]+.0 .1),,1,2,3;,,4,5,6;,,7,8,9;;
 
 This should simultaneously show how powerful FL can be, and how horrifyingly
 ugly it can be.

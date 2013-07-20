@@ -41,7 +41,9 @@ initTable = [
     ("cdr",     Func 1 mycdr),
 
     ("substr",  Func 3 mysubstr),
-    ("strcat",  Func 2 mystrcat)
+    ("strcat",  Func 2 mystrcat),
+
+    ("error",   Func 1 myerror)
     ]
 
 gt :: [Value] -> Bool
@@ -103,5 +105,8 @@ mysubstr _                              = error "Usage: substr String Int Int"
 
 mystrcat [Strval a, Strval b]           = Strval $ a ++ b
 mystrcat _                              = error "Usage: strcat String String"
+
+myerror [Strval s]      = error $ "PROGRAM ERROR: " ++ s
+myerror _               = error "ERROR: Usage: error String"
 
 initScope = Scope (Map.fromList initTable) []

@@ -36,9 +36,8 @@ data Scope = Scope (Map String Value) [Value]
                 deriving Show
 
 getval                          :: Scope -> Either String Int -> Value
-getval (Scope s _) (Left x)     = case Map.lookup x s of
-    Nothing         -> Error $ "Variable '" ++ x ++ "' is not in scope!"
-    Just v          -> v
+getval (Scope s _) (Left x)     = Map.findWithDefault
+    (Error $ "Variable '" ++ x ++ "' is not in scope!") x s
 getval (Scope _ s) (Right x)
     | length s > x  = s !! x
     | otherwise     = Error $ "Argument '" ++ show x ++ "' is not in scope!"

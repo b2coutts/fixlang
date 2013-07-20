@@ -24,8 +24,8 @@ instance Show Value where
     show (Strval x)         = show x
     show (Intval x)         = show x
     show (Lmbval i s t)     = "Lmb" ++ show i ++ show t
-    show Empty              = "[]"
-    show (Cons a b)         = show a ++ ":" ++ show b
+    show Empty              = ";"
+    show (Cons a b)         = "," ++ show a ++ " " ++ show b
     show (Func i _)         = "Func" ++ show i
 
 

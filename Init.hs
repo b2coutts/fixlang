@@ -28,6 +28,7 @@ initTable = [
     ("/",       int2 quot),
     ("mod",       int2 mod),
 
+    ("not",     Func 1 $ boolToVal . mynot),
     ("if",      Func 3 myif),
     ("else",    Func 1 (\[x] -> x)),
     ("gt",      Func 2 $ boolToVal . gt),
@@ -82,6 +83,11 @@ mycdr [Cons _ b]            = b
 mycdr [Strval (_:xs)]       = Strval xs
 mycdr _                     = error "Usage: cdr Cons or cdr String"
 
+
+mynot [Intval 0]            = True
+mynot [Strval ""]           = True
+mynot [Empty]               = True
+mynot _                     = False
 
 myif [(Intval 0), _, v]     = v
 myif [(Strval ""), _, v]    = v

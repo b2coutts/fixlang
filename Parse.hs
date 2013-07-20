@@ -33,6 +33,7 @@ tkz (',':xs)            = Name "cons":tkz xs
 tkz ('<':xs)            = Name "car":tkz xs
 tkz ('>':xs)            = Name "cdr":tkz xs
 tkz (';':xs)            = Name "empty":tkz xs
+tkz ('!':xs)            = Name "not":tkz xs
 tkz (':':xs)            = Punc ':':tkz xs
 tkz ('?':xs)            = Name "if":tkz xs
 tkz ('#':xs)            = tkz $ tail $ dropWhile (/= '\n') xs

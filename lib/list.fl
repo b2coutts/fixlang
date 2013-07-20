@@ -1,0 +1,18 @@
+# file containing utility functions for dealing with lists
+
+# create a range of integers from .1 to .2, excluding .2
+range: [?!lt 1 2            ;
+        else                ,1  0 + 1 .1  2]
+
+# map
+map: [?!2                   ;
+      else                  ,1 <2  0 1. >2]
+
+# filter
+filter: [?!2                ;
+         ?1 <2              ,<2 0 1. >2                
+         else               0 1. >2]
+
+# right fold
+foldr: [?!3                 2
+        else                1 <3  0 1. 2 >3]

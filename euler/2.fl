@@ -1,0 +1,18 @@
+# Project Euler 2
+# Sum all even fibonacci numbers that are less than or equal to 4 million
+import "std.fl"
+
+limit: 4000000
+
+# from a seed, generate fibonacci numbers up to 4 million
+genfibs: [
+    if gt <1 limit
+        1
+    else
+        0 ,+ <1 <>1 1;
+]
+
+# list of fibonacci numbers up to 4 million
+fiblist: genfibs ,1,1;
+
+foldr +. 0 filter (!mod .1 2) fiblist

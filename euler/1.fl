@@ -1,0 +1,5 @@
+# Project Euler 1
+# Sum all multiples of 3 and 5, from 1 to 1000
+import "std.fl"
+
+foldr +. 0 filter (not and mod .1 3  mod .1 5) range 1 1000

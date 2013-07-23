@@ -1,5 +1,7 @@
 Extend libraries
     - Implement string handling functions
+    - Split std.fl into several libraries
+        - make std.fl a series of import statements
 
 update documentation to reflect !, import, and Error.
 

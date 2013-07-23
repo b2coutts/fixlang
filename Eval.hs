@@ -33,5 +33,5 @@ eval (Scope a b) (Lmbtok i l t:xs)  = let f = (\a b -> a `elem` l) in
     (Lmbval i (Scope (Map.filterWithKey f a) b) t, xs)
 eval s (Apply:xs)                   = let (a,b) = eval s xs in apply a s b
 
-evaluate :: String -> Value
-evaluate = fst . eval initScope . parse
+evaluate :: [Token] -> Value
+evaluate = fst . eval initScope

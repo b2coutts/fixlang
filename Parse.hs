@@ -77,6 +77,11 @@ flipDot (Dotarg x)  = Dotint x
 flipDot (Dotint x)  = Dotarg x
 flipDot x           = x
 
+-- extract import statements from the beginning of a token list
+getImports                              :: [Token] -> ([String], [Token])
+getImports (Name "import":Strtok s:xs)  = let (a, b) = getImports xs in (s:a, b)
+getImports xs                           = ([], xs)
+
 -- post-process a token list
 pproc                           :: [Token] -> ([Token], [Token])
 pproc []                        = ([], [])
@@ -100,5 +105,5 @@ pproc (Punc '[':xs)             = let (a, b)    = pproc xs
 pproc (Punc ']':xs)             = ([], xs)
 pproc (x:xs)                    = let (a, b) = pproc xs in (x:a, b)
 
-parse :: String -> [Token]
-parse = fst . pproc . tkz
+parse :: String -> ([String], [Token])
+parse x = let (s, t) = getImports $ tkz x in (s, fst $ pproc t)

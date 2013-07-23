@@ -32,6 +32,6 @@ evalPrint = putStrLn . show . evaluate
 
 main = do
     args <- getArgs
-    let file = if null args then error "Usage: $0 filename" else head args
+    let file = if null args then "/dev/stdin" else head args
     tokens <- getTokens file
     evalPrint tokens

@@ -1,0 +1,10 @@
+# Project Euler 3
+# Find the largest prime factor of a big number
+
+# divide n by its factors until it can be divided no further
+$ [ ? gt * 2 2 1     1
+    ? !mod 1 2       0 / 1 2  .2
+                     0 1  + 2 .1 ] 600851475143 2
+
+# one-liner version
+#$[?gt * 2 2 1 1 ?!mod 1 2 0 / 1 2 .2 0 1 + 2 .1] 600851475143 2

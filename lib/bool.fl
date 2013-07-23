@@ -1,0 +1,4 @@
+# FL library containing useful functions for dealing with booleans
+
+or:     [?1 .1 2]
+and:    [?1 2 .0]

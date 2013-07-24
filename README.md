@@ -1,3 +1,6 @@
+**Note: this README is outdated**
+
+
 This project is an interpreter for Fixlang, a language of my invention. This
 README is an attempt at documentation.
 

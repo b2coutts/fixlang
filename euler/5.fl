@@ -1,0 +1,14 @@
+# Project Euler 5
+# Find the smallest number that is divisible by every number in [1..20]
+import "std.fl"
+
+# get a list of the prime factors of a number
+factor: [ $[?eq 1 2 ,1      ;
+            ?!mod 1 2       ,2  0 / 1 2  .2
+            else            0 1 + 2 .1] 1 .2 ]
+
+# generate a minimal list containing the prime factors of each [1..20]
+lst: foldr [?!1 2    ,<1 0 >1 rm <1 2] ; map factor. range 2 21
+
+# multiply this list to get the answer
+prod lst

@@ -6,3 +6,6 @@ not:    (?.1 0 1)
 
 ge:     [or gt 1 2 eq 1 2]
 le:     [or lt 1 2 eq 1 2]
+
+min:    [?lt 1 2 1 2]
+max:    [?gt 1 2 1 2]

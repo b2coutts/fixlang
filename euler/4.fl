@@ -1,0 +1,18 @@
+import "std.fl"
+# checks if .1 is a palindrome by converting it to a list
+isp: [lst: $[?!1;    ,mod 1 .10  0 / 1 .10] 1    eq  lst  rev lst]
+
+# sort pairs over `range 1 1000` in reverse order by sum
+pairs: $[,,1 2 ?eq 1 2    0 - 1 .1 .999    0 1 - 2 .1] 999 999
+
+# find the largest pair whose product is a palindrome
+rec: <filter [isp * <1 >1] pairs
+prod: * <rec >rec
+lower: min <rec >rec
+
+# list all pairs that could have a product as large as rec
+lst: $[?lt 2 lower;    ,,1 2  ?lt * 1 2 prod     0 -2 .1 -2 .1
+                                                 0 -1 .1 2] 999 999
+
+# find the maximal palindrome product from this list
+foldr max. 0 filter isp. map [* <1 >1] lst

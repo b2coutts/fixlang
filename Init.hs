@@ -11,12 +11,6 @@ import Parse
 import Dtypes
 import Data.Map as Map
 
--- helper function for composing Funcs
-int2     :: (Int -> Int -> Int) -> Value
-int2 f   = Func 2 (\x -> case x of
-    [Intval a, Intval b]  -> Intval $ f a b
-    _                     -> Error "ERROR: Arith function needs 2 Ints as args")
-
 -- helper function for returning booleans
 boolToVal               :: Bool -> Value
 boolToVal x             = if x then Intval 1 else Intval 0
@@ -25,12 +19,38 @@ boolToVal x             = if x then Intval 1 else Intval 0
 valToBool               :: Value -> Bool
 valToBool (Intval i)    = i /= 0
 
+myadd [Error e, _]            = Error $ "add1: " ++ e
+myadd [_, Error e]            = Error $ "add2: " ++ e
+myadd [Intval a, Intval b]    = Intval $ a + b
+myadd _                       = Error "Usage: add Int Int"
+
+mysub [Error e, _]            = Error $ "sub1: " ++ e
+mysub [_, Error e]            = Error $ "sub2: " ++ e
+mysub [Intval a, Intval b]    = Intval $ a - b
+mysub _                       = Error "Usage: sub Int Int"
+
+mymul [Error e, _]            = Error $ "mul1: " ++ e
+mymul [_, Error e]            = Error $ "mul2: " ++ e
+mymul [Intval a, Intval b]    = Intval $ a * b
+mymul _                       = Error "Usage: mul Int Int"
+
+mydiv [Error e, _]            = Error $ "div1: " ++ e
+mydiv [_, Error e]            = Error $ "div2: " ++ e
+mydiv [Intval a, Intval 0]    = Error "Division by zero"
+mydiv [Intval a, Intval b]    = Intval $ quot a b
+mydiv _                       = Error "Usage: div Int Int"
+
+mymod [Error e, _]            = Error $ "mod1: " ++ e
+mymod [_, Error e]            = Error $ "mod2: " ++ e
+mymod [Intval a, Intval b]    = Intval $ mod a b
+mymod _                       = Error "Usage: mod Int Int"
+
 initTable = [
-    ("+",       int2 (+)),
-    ("-",       int2 (-)),
-    ("*",       int2 (*)),
-    ("/",       int2 quot),
-    ("mod",       int2 mod),
+    ("add",     Func 2 myadd),
+    ("sub",     Func 2 mysub),
+    ("mul",     Func 2 mymul),
+    ("div",     Func 2 mydiv),
+    ("mod",     Func 2 mymod),
 
     ("not",     Func 1 $ mynot),
     ("if",      Func 3 myif),

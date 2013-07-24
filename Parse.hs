@@ -29,6 +29,11 @@ parseInt xs             = let (a, b) = span (`elem` ['0'..'9']) xs in
 -- convert a string into a list of tokens
 tkz                     :: String -> [Token]
 tkz []                  = []
+tkz ('+':xs)            = Name "add":tkz xs
+tkz ('-':xs)            = Name "sub":tkz xs
+tkz ('*':xs)            = Name "mul":tkz xs
+tkz ('/':xs)            = Name "div":tkz xs
+tkz ('%':xs)            = Name "mod":tkz xs
 tkz (',':xs)            = Name "cons":tkz xs
 tkz ('<':xs)            = Name "car":tkz xs
 tkz ('>':xs)            = Name "cdr":tkz xs

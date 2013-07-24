@@ -2,3 +2,7 @@
 
 or:     [?1 .1 2]
 and:    [?1 2 .0]
+not:    (?.1 0 1)
+
+ge:     [or gt 1 2 eq 1 2]
+le:     [or lt 1 2 eq 1 2]

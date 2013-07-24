@@ -52,7 +52,6 @@ initTable = [
     ("div",     Func 2 mydiv),
     ("mod",     Func 2 mymod),
 
-    ("not",     Func 1 $ mynot),
     ("if",      Func 3 myif),
     ("else",    Func 1 (\[x] -> x)),
     ("gt",      Func 2 $ gt),
@@ -116,13 +115,6 @@ mycdr [Strval ""]           = Error "cdr called on empty string"
 mycdr [Cons _ b]            = b
 mycdr [Strval (_:xs)]       = Strval xs
 mycdr _                     = Error "Usage: cdr Cons or cdr String"
-
-
-mynot [Error e]             = Error $ "not: " ++ e
-mynot [Intval 0]            = boolToVal $ True
-mynot [Strval ""]           = boolToVal $ True
-mynot [Empty]               = boolToVal $ True
-mynot _                     = boolToVal $ False
 
 myif [Error e, _, _]        = Error $ "if1: " ++ e
 myif [Intval 0, _, Error e] = Error $ "if3: " ++ e

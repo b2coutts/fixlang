@@ -12,6 +12,8 @@ May want to rewrite the entire thing
           stupid
     - should solve some existing problems before rewriting the entire codebase
       again
+    - have a somewhat more sophisticated stack trace system, handled at the
+      evaluation level rather than the function level
 
 
 Laziness issue

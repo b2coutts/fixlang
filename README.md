@@ -252,10 +252,10 @@ impossible to define the `Lambda` `{2, .1}` with (), because () would create a
 `Lambda` of only one argument.  For brevity and readability, () should be used
 instead of {} wherever possible.
 
-You can also use []s to define `Lambda`s. []s are like [], except the way you
-refer to arguments and `Int`s gets reversed. That is, `.3` now refers to the
-number 3, and `3` now refers to the third argument. This can be very convenient
-when defining a function that makes heavy use of its arguments, and
+You can also use `[]`s to define `Lambda`s. `[]`s are like `()`, except the way
+you refer to arguments and `Int`s gets reversed. That is, `.3` now refers to
+the number 3, and `3` now refers to the third argument. This can be very
+convenient when defining a function that makes heavy use of its arguments, and
 not-so-heavy use of numbers. As an example, here is the definition of a classic
 higher-order function:
 
